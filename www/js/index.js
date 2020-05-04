@@ -98,8 +98,33 @@ function edit(){
   var title = $('#title').val();
   var description = $('#description').val();
 
-  //
+  //Fetch the existing items
+  items = getItems();
+
+  //Push the new item into the existing list
+  items[id] = {
+    title: title,
+    description: description
+  };
+
+  //Store the new list
+  saveItems(items);
 }
+
+function remove(){
+  //Find the requested id
+  var id = window.location.href.split('?')[1];
+
+  //Fetch the existing items
+  items = getItems();
+
+  //Remove the item from the list
+  items.splice(id, 1);
+
+  //Store the new list
+  saveItems(items);
+}
+
 
 $(document).on('pagebeforeshow', '#home', function(event){
   homepage();
@@ -117,4 +142,12 @@ $(document).on('pagebeforeshow', '#view', function(event){
 
   //Load the requested item
   view(id);
+});
+
+$(document).on('click', '#edit', function(){
+  edit();
+});
+
+$(document).on('click', '#remove', function(){
+  remove();
 });

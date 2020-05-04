@@ -80,6 +80,52 @@ function toggle(id){
   window.location.reload();
 }
 
+function view(id){
+  //Fetch all the items
+  items = getItems();
+
+  //Find the requested item
+  item = items[id];
+
+  //Populate the page
+  $('#title').val(item.title);
+  $('#description').val(item.description)
+}
+
+function edit(){
+  //Retrieve the entered form data
+  var id = window.location.href.split('?')[1];
+  var title = $('#title').val();
+  var description = $('#description').val();
+
+  //Fetch the existing items
+  items = getItems();
+
+  //Push the new item into the existing list
+  items[id] = {
+    title: title,
+    description: description
+  };
+
+  //Store the new list
+  saveItems(items);
+}
+
+function remove(){
+  //Find the requested id
+  var id = window.location.href.split('?')[1];
+
+  //Fetch the existing items
+  items = getItems();
+
+  //Remove the item from the list
+  items.splice(id, 1);
+
+  //Store the new list
+  saveItems(items);
+}
+
+
 $(document).on('pagebeforeshow', '#home', function(event){
   homepage();
 });
@@ -88,4 +134,20 @@ $(document).on('click', 'toggle', function(){
   id = $(this).data('id');
 
   toggle(id);
+});
+
+$(document).on('pagebeforeshow', '#view', function(event){
+  //Retrieve the request id from the URL
+  id = window.location.href.split('?')[1];
+
+  //Load the requested item
+  view(id);
+});
+
+$(document).on('click', '#edit', function(){
+  edit();
+});
+
+$(document).on('click', '#remove', function(){
+  remove();
 });
