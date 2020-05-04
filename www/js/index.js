@@ -1,29 +1,19 @@
 
-var app = {
-    // Application Constructor
-    initialize: function() {
-        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-    },
+function add(){
+  //Retrieve the entered form data
+  var title = $('[name = "item"]').val();
 
-    // deviceready Event Handler
-    //
-    // Bind any cordova events here. Common events are:
-    // 'pause', 'resume', etc.
-    onDeviceReady: function() {
-        this.receivedEvent('deviceready');
-    },
+  //Fetch the existing items
+  items = getItems();
 
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+  //Push the new item into the existing list
+  items.push({
+    title: title
+  });
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+  //Store the newlist
+  saveItems(items);
 
-        console.log('Received Event: ' + id);
-    }
-};
-
-app.initialize();
+  //Reload the page to show the new item
+  window.location.reload();
+}

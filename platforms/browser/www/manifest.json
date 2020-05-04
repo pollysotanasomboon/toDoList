@@ -1,10 +1,10 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "To do list App_6636_Polly",
-  "short_name": "To do list App_6636_Polly",
-  "version": "io.cordova.hellocordova",
-  "description": "Assignment 1: First Application",
+  "name": "To do list App",
+  "short_name": "To do list App",
+  "version": "io.cordova.todolist.app",
+  "description": "Assignment 1, Polly 6636",
   "author": "Apache Cordova Team",
   "icons": [],
   "start_url": "index.html"
