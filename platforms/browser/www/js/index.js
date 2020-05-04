@@ -1,34 +1,168 @@
 
-//Selectors
-const todoInput = document.querySelector('todo-input');
-const todoButton = document.querySelector('todo-button');
-const todoList = document.querySelector('todo-list');
+var app ={
+  //Application Constructor
+  initialize: function(){
+    document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+  },
 
-//Event Listeners
-todoButton.addEventListener('click', addTodo);
+  //deviceready Event Handler
+  onDeviceReady: function(){
+    
 
-//Functions
-function addTodo(Event){
-  //Prevent form from submitting
-  event.preventDefault();
-  //Todo DIV
-  const todoDiv = document.createElement("div");
-  todoDiv.classList.add("todo");
-  //Create LI
-  const newTodo = document.createElement('li');
-  newTodo.innerText = 'hey';
-  newTodo.classList.add('todo-item');
-  todoDiv.appendChild(newTodo);
-  //Check mark button
-  const completedButton = document.createElement('button');
-  completedButton.innerText = '<i class="fas fa-check"></i>';
-  completedButton.classList.add("complete-btn");
-  todoDiv.appendChild(completedButton);
-  //Check trash button
-  const trashButton = document.createElement('button');
-  trashButton.innerText = '<i class="fas fa-trash"></i>';
-  trashButton.classList.add("complete-btn");
-  todoDiv.appendChild(trashButton);
-  //Append to list
-  todoList.appendChild(todoDiv);
+  },
+};
+
+app.initialize();
+
+function add(){
+  //Retrieve the entered form data
+  var title = $('[name = "item"]').val();
+
+  //Fetch the existing items
+  items = getItems();
+
+  //Push the new item into the existing list
+  items.push({
+    title: title
+  });
+
+  //Store the newlist
+  saveItems(items);
+
+  //Reload the page to show the new item
+  window.location.reload();
 }
+
+function getItems(){
+  //See if items is inside localStorage
+  if (localStorage.getItem("items")){
+
+    //If yes, then load the existing task
+    items = JSON.parse(localStorage.getItem("items"));
+  }
+  else{
+    //Make a new array of items
+    items = new Array();
+
+    //Save into local storage
+    localStorage.setItem("items", JSON.stringify(items));
+  }
+  return items;
+}
+
+function saveItems(items){
+  //Save the list into localStorage
+  localStorage.setItem("items", JSON.stringify(items));
+}
+
+function homepage(){
+  //Fetch the existing items
+  items = getItems();
+
+  //Clear the list
+  $('#items').find('li').remove();
+
+  //Add every item to the items list
+  $.each(items, function(index, item){
+    element = $('<li><a class="toggle" data-id="' + index + '" href="#"><h2>' + item.title + '</h2></a><a href="view.html?' + index + '"></li>');
+
+    if (item.done){
+      element.css('opacity', 5);
+    }
+    $('#items').append(element);
+  });
+  //Let JQuery re-render our list
+  $('#items').listview('refresh');
+}
+
+function toggle(id){
+  //Fetch all the items
+  items = getItems();
+
+  //Find the requested item
+  item = items[id];
+
+  //Toggle the status
+  item.done = (item.done) ? false : true;
+
+  //Write back to the item list
+  items[id] = item;
+
+  //Write back to the storage
+  saveItems(items);
+
+  //Reload the page
+  window.location.reload();
+}
+
+function view(id){
+  //Fetch all the items
+  items = getItems();
+
+  //Find the requested item
+  item = items[id];
+
+  //Populate the page
+  $('#title').val(item.title);
+  $('#description').val(item.description)
+}
+
+function edit(){
+  //Retrieve the entered form data
+  var id = window.location.href.split('?')[1];
+  var title = $('#title').val();
+  var description = $('#description').val();
+
+  //Fetch the existing items
+  items = getItems();
+
+  //Push the new item into the existing list
+  items[id] = {
+    title: title,
+    description: description
+  };
+
+  //Store the new list
+  saveItems(items);
+}
+
+function remove(){
+  //Find the requested id
+  var id = window.location.href.split('?')[1];
+
+  //Fetch the existing items
+  items = getItems();
+
+  //Remove the item from the list
+  items.splice(id, 1);
+
+  //Store the new list
+  saveItems(items);
+}
+
+$(document).on('pagebeforeshow', '#home', function(event){
+  homepage();
+});
+
+$(document).on('click', 'toggle', function(){
+  id = $(this).data('id');
+
+  toggle(id);
+});
+
+$(document).on('pagebeforeshow', '#view', function(event){
+  //Retrieve the request id from the URL
+  id = window.location.href.split('?')[1];
+
+  //Load the requested item
+  view(id);
+});
+
+$(document).on('click', '#edit', function(){
+  edit();
+});
+
+$(document).on('click', '#remove', function(){
+  remove();
+});
+

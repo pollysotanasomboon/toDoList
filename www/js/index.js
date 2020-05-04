@@ -1,4 +1,31 @@
 
+var app ={
+  //Application Constructor
+  initialize: function(){
+    document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+  },
+
+  //deviceready Event Handler
+  onDeviceReady: function(){
+    
+    document.addEventListener("deviceready", this.onDeviceReady, false);
+    function onDeviceReady(){
+      Console.log("navigator.geolocation works well");
+    }
+
+    document.addEventListener("deviceready", this.onDeviceReady, false);
+    function onDeviceReady(){
+      Console.log("navigator.camera");
+    }
+
+
+  },
+
+  
+};
+
+app.initialize();
+
 function add(){
   //Retrieve the entered form data
   var title = $('[name = "item"]').val();
@@ -125,7 +152,6 @@ function remove(){
   saveItems(items);
 }
 
-
 $(document).on('pagebeforeshow', '#home', function(event){
   homepage();
 });
@@ -151,3 +177,4 @@ $(document).on('click', '#edit', function(){
 $(document).on('click', '#remove', function(){
   remove();
 });
+
