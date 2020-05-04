@@ -14,13 +14,15 @@
 
     </head>
     <body>
-        <div data-role="page" id="home">
-            <div data-role="header">
+        <div data-role="page" id="view">
+            <div data-role="header" data-add-back-btn="true">
                 <h1>TO DO LIST</h1>
+                <a id="remove" href="index.html" class="ui-btn-right">Delete</a>
             </div>
             <div data-role="content">
-                <input type="text" name="item" placeholder="Add a task" onchange="add();">
-                <ul id="items" data-role="listview" data-inset="true"></ul>
+                <input type="text" id="title" name="title" placeholder="Add a title">
+                <textarea id="description" name="description" placeholder="Enter a description"></textarea>
+                <a id="edit" href="index.html" data-role="button">Save</a>
             </div>
         </div>
         
